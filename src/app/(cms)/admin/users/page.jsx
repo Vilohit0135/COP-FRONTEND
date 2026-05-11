@@ -33,6 +33,7 @@ const ACCESS_OPTIONS = [
   { id: "reviews", label: "Reviews" },
   { id: "students", label: "Students" },
   { id: "users", label: "Users Management" },
+  { id: "activities", label: "Activities" },
 ];
 
 /* ── shared input class ── */

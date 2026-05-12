@@ -771,7 +771,7 @@ function FieldModal({ section, onSave, onClose }) {
                   key={type}
                   variant="ghost"
                   onClick={() => handleTypeSelect(type)}
-                  className="flex flex-col items-start text-left p-6 bg-card dark:bg-zinc-800/40 border border-border/50 dark:border-zinc-700/50 rounded-[2rem] hover:border-primary/40 dark:hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 transition-all group active:scale-95 h-auto w-full"
+                  className="flex flex-col items-start text-left p-6 bg-card dark:bg-zinc-800/40 border border-border/50 dark:border-zinc-700/50 rounded-[2rem] hover:border-primary/40 dark:hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 transition-all group active:scale-95 h-auto w-full whitespace-normal"
                 >
                   <div className="p-3 bg-muted/50 dark:bg-zinc-700/40 text-muted-foreground rounded-2xl group-hover:bg-primary/10 group-hover:text-primary transition-colors mb-4">
                     {details.icon}
@@ -844,7 +844,7 @@ function FieldModal({ section, onSave, onClose }) {
               <Button
                 variant="outline"
                 onClick={() => setIsSelectingType(true)}
-                className="w-full py-4 bg-muted/20 dark:bg-zinc-800/20 border-2 border-dashed border-border/40 dark:border-zinc-700/50 text-muted-foreground/60 rounded-3xl hover:bg-primary/5 hover:border-primary/30 hover:text-primary font-bold transition-all flex items-center justify-center gap-2 h-auto"
+                className="w-full py-4 bg-muted/20 dark:bg-zinc-800/20 border-2 border-dashed border-border/40 dark:border-zinc-700/50 text-muted-foreground/60 rounded-3xl hover:bg-primary/5 hover:border-primary/30 hover:text-primary font-bold transition-all flex items-center justify-center gap-2 h-auto whitespace-normal"
               >
                 <PlusCircle className="w-5 h-5" />
                 Add New Field Definition

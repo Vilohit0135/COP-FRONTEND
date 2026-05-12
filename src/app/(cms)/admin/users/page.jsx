@@ -45,6 +45,88 @@ const inputCls =
   "focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-400 focus:border-transparent " +
   "outline-none transition-all";
 
+/* ── access level toggle buttons ── */
+const AccessLevelToggle = ({ value, onChange }) => (
+  <div className="grid grid-cols-2 gap-3">
+    {[
+      { id: "viewer", title: "Read-only", sub: "Selected sections" },
+      { id: "admin", title: "Full Admin", sub: "Grant all permissions" },
+    ].map((opt) => (
+      <button
+        key={opt.id}
+        type="button"
+        onClick={() => onChange(opt.id)}
+        className={`p-4 rounded-xl border-2 text-left transition-all ${value === opt.id
+          ? "border-zinc-900 dark:border-zinc-200 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900"
+          : "border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/60 text-zinc-500 dark:text-zinc-400 hover:border-zinc-400 dark:hover:border-zinc-500"
+          }`}
+      >
+        <div className="text-sm font-bold">{opt.title}</div>
+        <div className="text-[10px] opacity-70 mt-0.5 font-medium">{opt.sub}</div>
+      </button>
+    ))}
+  </div>
+);
+
+/* ── permissions checklist ── */
+const PermissionsGrid = ({ value, onChange }) => (
+  <div className="grid grid-cols-2 gap-2 bg-zinc-50 dark:bg-zinc-800/50 p-5 rounded-xl border border-zinc-200 dark:border-zinc-700/50 max-h-60 overflow-y-auto">
+    {ACCESS_OPTIONS.map((opt) => (
+      <label key={opt.id} className="flex items-center gap-2.5 cursor-pointer group">
+        <input
+          type="checkbox"
+          checked={value.includes(opt.id)}
+          onChange={() => onChange(opt.id)}
+          className="w-4 h-4 rounded border-zinc-300 dark:border-zinc-600 text-zinc-900 dark:text-zinc-100 bg-white dark:bg-zinc-700 focus:ring-zinc-500 cursor-pointer transition-all"
+        />
+        <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">
+          {opt.label}
+        </span>
+      </label>
+    ))}
+  </div>
+);
+
+/* ── modal shell ── */
+const ModalShell = ({ onClose, children }) => (
+  <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div
+      className="absolute inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
+      onClick={onClose}
+    />
+    <div className="
+      relative w-full max-w-lg p-8 rounded-2xl
+      bg-white dark:bg-zinc-900
+      border border-zinc-200 dark:border-zinc-700/50
+      shadow-xl dark:shadow-[0_20px_60px_rgba(0,0,0,0.6)]
+      animate-in zoom-in-95 slide-in-from-bottom-4 duration-200
+    ">
+      {children}
+    </div>
+  </div>
+);
+
+/* ── modal close button ── */
+const CloseBtn = ({ onClick }) => (
+  <button
+    onClick={onClick}
+    className="w-8 h-8 flex items-center justify-center rounded-lg text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-lg leading-none"
+  >
+    ×
+  </button>
+);
+
+/* ── feedback banner ── */
+const FeedbackBanner = ({ type, text }) =>
+  text ? (
+    <div className={`p-3.5 rounded-xl text-xs font-bold uppercase tracking-wider text-center animate-in zoom-in-95 duration-200 ${type === "success"
+      ? "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20"
+      : "bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-500/20"
+      }`}>
+      {text}
+    </div>
+  ) : null;
+
 export default function UsersPage() {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -179,87 +261,6 @@ export default function UsersPage() {
 
   const totalPages = Math.ceil(totalActivities / itemsPerPage);
 
-  /* ── access level toggle buttons ── */
-  const AccessLevelToggle = ({ value, onChange }) => (
-    <div className="grid grid-cols-2 gap-3">
-      {[
-        { id: "viewer", title: "Read-only", sub: "Selected sections" },
-        { id: "admin", title: "Full Admin", sub: "Grant all permissions" },
-      ].map((opt) => (
-        <button
-          key={opt.id}
-          type="button"
-          onClick={() => onChange(opt.id)}
-          className={`p-4 rounded-xl border-2 text-left transition-all ${value === opt.id
-            ? "border-zinc-900 dark:border-zinc-200 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900"
-            : "border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/60 text-zinc-500 dark:text-zinc-400 hover:border-zinc-400 dark:hover:border-zinc-500"
-            }`}
-        >
-          <div className="text-sm font-bold">{opt.title}</div>
-          <div className="text-[10px] opacity-70 mt-0.5 font-medium">{opt.sub}</div>
-        </button>
-      ))}
-    </div>
-  );
-
-  /* ── permissions checklist ── */
-  const PermissionsGrid = ({ value, onChange }) => (
-    <div className="grid grid-cols-2 gap-2 bg-zinc-50 dark:bg-zinc-800/50 p-5 rounded-xl border border-zinc-200 dark:border-zinc-700/50 max-h-60 overflow-y-auto">
-      {ACCESS_OPTIONS.map((opt) => (
-        <label key={opt.id} className="flex items-center gap-2.5 cursor-pointer group">
-          <input
-            type="checkbox"
-            checked={value.includes(opt.id)}
-            onChange={() => onChange(opt.id)}
-            className="w-4 h-4 rounded border-zinc-300 dark:border-zinc-600 text-zinc-900 dark:text-zinc-100 bg-white dark:bg-zinc-700 focus:ring-zinc-500 cursor-pointer transition-all"
-          />
-          <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">
-            {opt.label}
-          </span>
-        </label>
-      ))}
-    </div>
-  );
-
-  /* ── modal shell ── */
-  const ModalShell = ({ onClose, children }) => (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div
-        className="absolute inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
-        onClick={onClose}
-      />
-      <div className="
-        relative w-full max-w-lg p-8 rounded-2xl
-        bg-white dark:bg-zinc-900
-        border border-zinc-200 dark:border-zinc-700/50
-        shadow-xl dark:shadow-[0_20px_60px_rgba(0,0,0,0.6)]
-        animate-in zoom-in-95 slide-in-from-bottom-4 duration-200
-      ">
-        {children}
-      </div>
-    </div>
-  );
-
-  /* ── modal close button ── */
-  const CloseBtn = ({ onClick }) => (
-    <button
-      onClick={onClick}
-      className="w-8 h-8 flex items-center justify-center rounded-lg text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-lg leading-none"
-    >
-      ×
-    </button>
-  );
-
-  /* ── feedback banner ── */
-  const FeedbackBanner = ({ type, text }) =>
-    text ? (
-      <div className={`p-3.5 rounded-xl text-xs font-bold uppercase tracking-wider text-center animate-in zoom-in-95 duration-200 ${type === "success"
-        ? "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20"
-        : "bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-500/20"
-        }`}>
-        {text}
-      </div>
-    ) : null;
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 pb-20">

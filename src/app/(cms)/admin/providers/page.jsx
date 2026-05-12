@@ -39,6 +39,7 @@ const EMPTY_FORM = {
   contentBlocks: [],
   logo: "",
   coverImage: "",
+  coverDescription: "",
   galleryDescription: null,
   galleryImages: [],
   isFeatured: false,
@@ -372,6 +373,16 @@ function ProviderForm({ form, setForm, onSubmit, loading, submitLabel, onCancel 
                 placeholder="Brief description shown in cards..."
                 value={form.shortExcerpt}
                 onChange={(e) => setForm({ ...form, shortExcerpt: e.target.value })}
+                className={ta}
+                rows={2}
+              />
+            </Field>
+
+            <Field label="Cover Description" span={12} hint="Brief description shown over the cover image">
+              <textarea
+                placeholder="Description for the cover section..."
+                value={form.coverDescription}
+                onChange={(e) => setForm({ ...form, coverDescription: e.target.value })}
                 className={ta}
                 rows={2}
               />
@@ -944,6 +955,7 @@ export default function ProvidersPage() {
       contentBlocks: item.contentBlocks || [],
       logo: item.logo || "",
       coverImage: item.coverImage || "",
+      coverDescription: item.coverDescription || "",
       galleryDescription: item.galleryDescription || null,
       galleryImages: item.galleryImages || [],
       isFeatured: item.isFeatured || false,
